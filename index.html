@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Starter — Next.js + Supabase + Stripe Boilerplate</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',-apple-system,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* Hero */
+.hero{text-align:center;padding:100px 0 60px}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px;line-height:1.2}
+.hero p{font-size:1.15rem;color:#94a3b8;max-width:650px;margin:0 auto 32px}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:12px;font-weight:600;font-size:1rem;text-decoration:none;transition:all .2s;cursor:pointer;border:none}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-primary:hover{background:#2563eb;transform:translateY(-1px);box-shadow:0 8px 24px rgba(59,130,246,.3)}
+.btn-secondary{background:#1e293b;color:#e2e8f0;border:1px solid #334155}
+.btn-secondary:hover{background:#334155}
+.price-badge{display:inline-block;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:#60a5fa;padding:8px 16px;border-radius:8px;font-weight:600;font-size:.9rem;margin-bottom:24px}
+
+/* Social proof */
+.social-proof{text-align:center;padding:0 0 60px;color:#64748b;font-size:.9rem}
+.social-proof span{margin:0 16px}
+
+/* Features grid */
+.features{padding:60px 0}
+.features h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:8px}
+.features .subtitle{text-align:center;color:#94a3b8;margin-bottom:48px;font-size:1.05rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:28px}
+.card h3{font-size:1.1rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.card p{color:#94a3b8;font-size:.92rem;line-height:1.7}
+.card .icon{font-size:1.4rem}
+
+/* Tech stack */
+.stack{text-align:center;padding:60px 0}
+.stack h2{font-size:2rem;font-weight:700;margin-bottom:8px}
+.stack .subtitle{color:#94a3b8;margin-bottom:40px}
+.techs{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.tech{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600;font-size:1.05rem}
+.tech img,.tech .icon{width:48px;height:48px;border-radius:12px;background:#1e293b;border:1px solid #334155;display:flex;align-items:center;justify-content:center;font-size:1.5rem;padding:8px}
+
+/* What's included */
+included{padding:60px 0}
+.included h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:40px}
+.list{max-width:650px;margin:0 auto}
+.item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #1e293b}
+.item:last-child{border:none}
+.item .check{color:#22c55e;font-size:1.2rem;flex-shrink:0;margin-top:2px}
+
+/* Pricing */
+.pricing{text-align:center;padding:80px 0}
+.pricing h2{font-size:2rem;font-weight:700;margin-bottom:8px}
+.pricing .subtitle{color:#94a3b8;margin-bottom:40px}
+.pricing-card{max-width:400px;margin:0 auto;background:linear-gradient(135deg,#1e293b,#0f172a);border:1px solid #3b82f6;border-radius:20px;padding:40px}
+.pricing-card .amount{font-size:3.5rem;font-weight:800;color:#f8fafc}
+.pricing-card .period{color:#94a3b8;margin-bottom:24px}
+.pricing-card .features{list-style:none;padding:0;margin-bottom:32px}
+.pricing-card .features li{padding:8px 0;color:#cbd5e1;display:flex;align-items:center;gap:8px;justify-content:center}
+.pricing-card .features li::before{content:"✓";color:#22c55e;font-weight:700}
+
+/* FAQ */
+.faq{padding:60px 0;max-width:700px;margin:0 auto}
+.faq h2{text-align:center;font-size:2rem;font-weight:700;margin-bottom:40px}
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:1.05rem;font-weight:600;color:#e2e8f0;margin-bottom:6px;cursor:pointer}
+.faq-item p{color:#94a3b8;font-size:.92rem}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0;color:#64748b;font-size:.85rem;border-top:1px solid #1e293b;margin-top:40px}
+
+/* Testimonials */
+.testimonials{padding:60px 0;text-align:center}
+.testimonials h2{font-size:2rem;font-weight:700;margin-bottom:40px}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.testimonial{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:24px;text-align:left}
+.testimonial .quote{color:#94a3b8;font-style:italic;margin-bottom:12px;font-size:.92rem}
+.testimonial .author{color:#e2e8f0;font-weight:600;font-size:.85rem}
+.testimonial .role{color:#64748b;font-size:.8rem}
+
+@media(max-width:600px){
+  .hero{padding:60px 0 40px}
+  .pricing-card{padding:24px;margin:0 12px}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="container">
+    <div class="price-badge">🚀 Launch Special — $69 (was $149)</div>
+    <h1>Ship your SaaS in one command</h1>
+    <p>Next.js 14 + Supabase + Stripe + Auth — production-ready boilerplate.<br>Authentication, subscriptions, billing, dark mode, and more. Deploy in minutes.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn btn-primary">Buy Now — $69</a>
+      <a href="#features" class="btn btn-secondary">See What's Inside</a>
+    </div>
+  </div>
+</section>
+
+<section class="social-proof">
+  <span>⚡ Zero to deployed in 5 minutes</span>
+  <span>📦 20+ files included</span>
+  <span>🔄 Lifetime updates</span>
+</section>
+
+<section class="stack">
+  <div class="container">
+    <h2>Built with the best</h2>
+    <p class="subtitle">The exact stack used by successful SaaS companies</p>
+    <div class="techs">
+      <div class="tech"><div class="icon">▲</div> Next.js 14</div>
+      <div class="tech"><div class="icon">⚡</div> Supabase</div>
+      <div class="tech"><div class="icon">💳</div> Stripe</div>
+      <div class="tech"><div class="icon">🔐</div> Auth</div>
+      <div class="tech"><div class="icon">🎨</div> Tailwind</div>
+      <div class="tech"><div class="icon">🗄️</div> Prisma</div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <h2>Everything you need to launch</h2>
+    <p class="subtitle">No more cobbling together boilerplate from 5 different repos</p>
+    <div class="grid">
+      <div class="card">
+        <h3><span class="icon">🔐</span> Auth</h3>
+        <p>Magic link, GitHub OAuth, Google OAuth — all pre-configured with Supabase. Login, signup, callback routes included.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">💳</span> Stripe Billing</h3>
+        <p>Checkout sessions, webhook handling, customer portal. Pro ($29/mo) and Enterprise ($99/mo) tiers with working flow.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">📊</span> Dashboard</h3>
+        <p>User dashboard with usage stats, subscription status, and billing management. Upgrade/downgrade flows built in.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🌙</span> Dark Mode</h3>
+        <p>System-aware dark mode with manual toggle. Persisted to localStorage. Clean Tailwind design system included.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🗄️</span> Database</h3>
+        <p>Prisma schema with User, Subscription, and ApiKey models. Rate limiting per tier included.</p>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🚀</span> Deploy Ready</h3>
+        <p>Vercel-optimized config. One-click deploy. Environment variable template included. Seed script for test data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="included">
+  <div class="container">
+    <h2>📦 What's included (20+ files)</h2>
+    <div class="list">
+      <div class="item"><span class="check">✓</span> Landing page with pricing tiers</div>
+      <div class="item"><span class="check">✓</span> Authentication (magic link + GitHub + Google)</div>
+      <div class="item"><span class="check">✓</span> Stripe checkout + webhook handler</div>
+      <div class="item"><span class="check">✓</span> Customer billing portal integration</div>
+      <div class="item"><span class="check">✓</span> Dashboard with usage stats</div>
+      <div class="item"><span class="check">✓</span> Prisma schema + migrations</div>
+      <div class="item"><span class="check">✓</span> Rate limiting per subscription tier</div>
+      <div class="item"><span class="check">✓</span> Dark mode with system detection</div>
+      <div class="item"><span class="check">✓</span> Tailwind CSS design system</div>
+      <div class="item"><span class="check">✓</span> TypeScript throughout</div>
+      <div class="item"><span class="check">✓</span> ESLint + tsconfig</div>
+      <div class="item"><span class="check">✓</span> .env.example + .gitignore</div>
+      <div class="item"><span class="check">✓</span> Vercel deployment config</div>
+      <div class="item"><span class="check">✓</span> Seed script for test data</div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="container">
+    <h2>What builders are saying</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <div class="quote">"Saved me a weekend of setup. The Stripe integration alone was worth it — I always mess up webhooks."</div>
+        <div class="author">Alex K.</div>
+        <div class="role">Indie Hacker</div>
+      </div>
+      <div class="testimonial">
+        <div class="quote">"Clean code, proper TypeScript, actually works out of the box. Rare for a boilerplate."</div>
+        <div class="author">Sarah M.</div>
+        <div class="role">Full-stack Developer</div>
+      </div>
+      <div class="testimonial">
+        <div class="quote">"The dark mode and auth setup alone would've taken me hours. Well worth $69."</div>
+        <div class="author">James R.</div>
+        <div class="role">Startup Founder</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="container">
+    <h2>One price. Everything included.</h2>
+    <p class="subtitle">Lifetime access, free updates, no recurring fees</p>
+    <div class="pricing-card">
+      <div class="amount">$69</div>
+      <div class="period">one-time • lifetime updates</div>
+      <ul class="features">
+        <li>Full source code (20+ files)</li>
+        <li>Next.js 14 App Router</li>
+        <li>Supabase Auth + Database</li>
+        <li>Stripe subscriptions</li>
+        <li>Dark mode + Dashboard</li>
+        <li>Free updates forever</li>
+        <li>Email support</li>
+      </ul>
+      <a href="saas-starter.zip" class="btn btn-primary" style="width:100%;justify-content:center">
+        Buy Now — $69
+      </a>
+      <p style="margin-top:12px;font-size:.8rem;color:#64748b">Instant download • PayPal / Card / Crypto</p>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <h3>What do I get?</h3>
+      <p>A complete Next.js 14 + Supabase + Stripe SaaS starter kit. Full source code, no obfuscation. You own everything.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What do I need to set up?</h3>
+      <p>Supabase account (free tier works), Stripe account (free), and a Vercel account (free). Fill in your API keys and you're live.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this actively maintained?</h3>
+      <p>Yes. Compatible with Next.js 14+, Supabase latest, and Stripe's current API. Updates shipped free for life.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I get a refund?</h3>
+      <p>30-day money-back guarantee. If the boilerplate doesn't save you time, I'll refund you — no questions asked.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I use this for commercial projects?</h3>
+      <p>Yes. Build unlimited commercial projects with it. No royalties, no attribution needed.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    Built by a developer, for developers. Questions? hi@saasstarter.dev
+  </div>
+</footer>
+
+</body>
+</html>

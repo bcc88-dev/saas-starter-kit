@@ -217,10 +217,10 @@ included{padding:60px 0}
         <li>Free updates forever</li>
         <li>Email support</li>
       </ul>
-      <a href="saas-starter.zip" class="btn btn-primary" style="width:100%;justify-content:center">
+      <button onclick="buyNow()" class="btn btn-primary" style="width:100%;justify-content:center;border:none;cursor:pointer;font-size:inherit">
         Buy Now — $69
-      </a>
-      <p style="margin-top:12px;font-size:.8rem;color:#64748b">Instant download • PayPal / Card / Crypto</p>
+      </button>
+      <p style="margin-top:12px;font-size:.8rem;color:#64748b">Secure checkout via Stripe • Instant download</p>
     </div>
   </div>
 </section>
@@ -257,5 +257,33 @@ included{padding:60px 0}
   </div>
 </footer>
 
+<script>
+function buyNow() {
+  const btn = document.querySelector('.btn-primary');
+  const origText = btn.textContent;
+  btn.textContent = 'Redirecting to Stripe...';
+  btn.disabled = true;
+
+  const checkoutUrl = localStorage.getItem('checkout_api') || 'https://checkout.saas-starter-kit.vercel.app';
+
+  fetch(checkoutUrl + '/create-checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({})
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.url) window.location.href = d.url;
+    else throw new Error(d.error || 'Unknown error');
+  })
+  .catch(e => {
+    // Fallback: download directly
+    console.log('Checkout server unavailable, using direct download:', e.message);
+    window.location.href = 'saas-starter.zip';
+    btn.textContent = origText;
+    btn.disabled = false;
+  });
+}
+</script>
 </body>
 </html>
